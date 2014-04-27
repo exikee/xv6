@@ -70,7 +70,7 @@ sys_read(void)
   int n;
   char *p;
 
-  if(argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argptr(1, &p, n) < 0)
+  if(argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argptr(1, &p, n) < 0)//对参数判断和赋值，
     return -1;
   return fileread(f, p, n);
 }

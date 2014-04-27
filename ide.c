@@ -48,12 +48,12 @@ ideinit(void)
   int i;
 
   initlock(&idelock, "ide");
-  picenable(IRQ_IDE);
+  picenable(IRQ_IDE);//开中断
   ioapicenable(IRQ_IDE, ncpu - 1);
   idewait(0);
   
   // Check if disk 1 is present
-  outb(0x1f6, 0xe0 | (1<<4));
+  outb(0x1f6, 0xe0 | (1<<4));//通过像1f6端口    1<<4确定磁盘号
   for(i=0; i<1000; i++){
     if(inb(0x1f7) != 0){
       havedisk1 = 1;
@@ -62,7 +62,7 @@ ideinit(void)
   }
   
   // Switch back to disk 0.
-  outb(0x1f6, 0xe0 | (0<<4));
+  outb(0x1f6, 0xe0 | (0<<4));//对磁盘号进行判断
 }
 
 // Start the request for b.  Caller must hold idelock.
@@ -104,7 +104,7 @@ ideintr(void)
 
   // Read data if needed.
   if(!(b->flags & B_DIRTY) && idewait(1) >= 0)
-    insl(0x1f0, b->data, 512/4);
+    insl(0x1f0, b->data, 512/4);//从1f0端口把128个数据读到b->data
   
   // Wake process waiting for this buf.
   b->flags |= B_VALID;
